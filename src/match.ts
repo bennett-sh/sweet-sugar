@@ -1,5 +1,6 @@
 import type { RecursivePartial } from './types.js'
 import { deepCompare } from './utils/objects.js'
+import { Option } from './option.js'
 
 class MatchStatementBuilder<T, TReturn> {
   private collectedWhens: Array<[T | RecursivePartial<T>, (key: T) => any]> = []
@@ -66,6 +67,36 @@ class MatchStatementBuilder<T, TReturn> {
       }
     }
     return this as any as MatchStatementBuilder<T, TReturn | TLocalReturn>
+  }
+
+  /**
+   * Allows you to easily match & extract a some value from an option
+   * @example
+   * match(Option.some("hello"))
+   *  .some(value => console.log(value)) //= hello
+   *  .none(() => console.log("no value :("))
+   * @see {@link none}
+   */
+  public get some(): T extends Option<any> ? <TLocalReturn>(callback: (key: T extends Option<infer U> ? U : never) => TReturn | TLocalReturn) => MatchStatementBuilder<T, TReturn | TLocalReturn> : never {
+    if(!(this.key instanceof Option)) throw new TypeError('this method is only available on the Option<T> type')
+    return function<TLocalReturn>(callback: (key: T) => TReturn | TLocalReturn) {
+      return this.when({ isSome: true }, () => callback(this.key.unwrap$()))
+    } as any
+  }
+
+  /**
+   * Allows you to easily match & extract a some value from an option
+   * @example
+   * match(Option.some("hello"))
+   *  .some(value => console.log(value)) //= hello
+   *  .none(() => console.log("no value :("))
+   * @see {@link some}
+   */
+  public get none(): T extends Option<any> ? <TLocalReturn>(callback: () => TReturn | TLocalReturn) => MatchStatementBuilder<T, TReturn | TLocalReturn> : never {
+    if(!(this.key instanceof Option)) throw new TypeError('this method is only available on the Option<T> type')
+    return function<TLocalReturn>(callback: () => TReturn | TLocalReturn) {
+      return this.when({ isNone: true }, callback)
+    } as any
   }
 
   /**
