@@ -72,6 +72,29 @@ export class MatchStatementBuilder<T, TReturn> {
   }
 
   /**
+   * Allows for a conditional match statement.
+   * @example
+   * const hasPermission = match(user)
+   *  .assuming({ role: 'admin' })
+   *  .finish
+   */
+  public assuming<P extends T | RecursivePartial<T>>(pattern: P): MatchStatementBuilder<T, TReturn | boolean> {
+    return this.when(pattern, () => true)
+  }
+
+  /**
+   * Allows for a conditional match statement.
+   * @example
+   * const isHigherUp = match(user)
+   *  .assumingNot({ role: 'admin' })
+   *  .assumingNot({ role: 'moderator' })
+   *  .finish
+   */
+  public assumingNot<P extends T | RecursivePartial<T>>(pattern: P): MatchStatementBuilder<T, TReturn | boolean> {
+    return this.when(pattern, () => false)
+  }
+
+  /**
    * Allows you to easily match & extract a some value from an option
    * @example
    * match(Option.some("hello"))

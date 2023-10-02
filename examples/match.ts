@@ -10,7 +10,7 @@ interface User {
 const user: User = {
   name: 'John Doe',
   age: 35,
-  role: 'admin'
+  role: 'user'
 }
 
 const permissionLevel = match(user)
@@ -29,7 +29,7 @@ const parseYesNo = raw => match(raw)
 
 parseYesNo('yes') //=> true
 parseYesNo('no')  //=> false
-parseYesNo('asd') //=> Error: unknown value
+// parseYesNo('asd') //=> Error: unknown value
 
 match(true)
   .wait
@@ -45,3 +45,10 @@ match(true)
   [match true -> print first now]
   [match saved true -> print second now]
 */
+
+console.log({
+  hasPermission: match(user)
+    .assuming({ role: 'admin' })
+    .assuming({ role: 'moderator' })
+    .finish
+})
