@@ -44,11 +44,12 @@ jobs:
       - name: Build Docs
         run: jsdoc -r -p package.json .
 
+      - name: Clone Docs
+        run: git clone --branch docs --depth 1 https://github.com/${{ github.repository }}.git docs
+
       - name: Update Docs
         run: |
-          git branch -D docs
-          git checkout -b docs
-          rm -rf .!(out)
-          mv out/sweet-sugar/* .
-          rm -rf out
+          mv out/sweet-sugar/* docs/
+          cd docs
           git commit -m "docs: update docs"
+          git push
