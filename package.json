@@ -18,5 +18,8 @@
     "url": "https://github.com/bennett-sh/sweet-sugar.git"
   },
   "author": "BSh",
-  "license": "ISC"
+  "license": "ISC",
+  "scripts": {
+    "prepublish": "rm -rf dist && tsc"
+  }
 }
