@@ -56,7 +56,7 @@ export class Result<T, E> {
   /** Returns the actual value or throws an unwrap error. */
   public unwrap$(): T | never {
     if(this.status === ResultStatus.Err) throw new UnwrapError('attempted to unwrap on an errored result')
-    return this.data
+    return this.data!
   }
 
   /** Returns the error or undefined if there's no error */
@@ -67,19 +67,19 @@ export class Result<T, E> {
   /** Returns the error or throws an unwrap error if there's no error. */
   public unwrapErr$(): E | never {
     if(this.status === ResultStatus.Ok) throw new UnwrapError('attempted to unwrap error on an okay result')
-    return this.error
+    return this.error!
   }
 
   /** Returns the actual value or the result of a callback, which may also throw an error */
   public unwrapOrElse(f: (err: E) => T | never): T {
-    if(this.status === ResultStatus.Err) return f(this.unwrapErr())
-    return this.unwrap()
+    if(this.status === ResultStatus.Err) return f(this.unwrapErr$())
+    return this.unwrap$()
   }
 
   /** Returns the actual value or the first parameter */
   public unwrapOr(or: T): T {
     if(this.status === ResultStatus.Err) return or
-    return this.unwrap()
+    return this.unwrap$()
   }
 
   /**

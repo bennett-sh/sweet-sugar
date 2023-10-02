@@ -48,19 +48,19 @@ export class Option<T> {
   /** Returns the actual value or throws an unwrap error. */
   public unwrap$(): T | never {
     if(!this._isSome) throw new UnwrapError('attempted to unwrap on a no-value option')
-    return this.data
+    return this.data!
   }
 
   /** Returns the actual value or the result of a callback, which may also throw an error */
   public unwrapOrElse(f: () => T | never): T {
     if(!this._isSome) return f()
-    return this.unwrap()
+    return this.unwrap$()
   }
 
   /** Returns the actual value or the first parameter */
   public unwrapOr(or: T): T {
     if(!this._isSome) return or
-    return this.unwrap()
+    return this.unwrap$()
   }
 
   /**
