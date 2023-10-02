@@ -84,3 +84,10 @@ export class Option<T> {
     return this
   }
 }
+
+/** Wraps a value into an option */
+export function Some<T>(data: T): Option<T> {
+  return Option.some(data)
+}
+/** A none-value */
+export const None = Option.none

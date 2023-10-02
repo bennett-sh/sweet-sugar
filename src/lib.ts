@@ -1,3 +1,4 @@
 
-export { Option } from './option.js'
-export { match, MatchStatementBuilder } from './match.js'
+export * from './match.js'
+export * from './option.js'
+export * from './result.js'

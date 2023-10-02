@@ -1,5 +1,5 @@
+import { type Option, None, Some } from '../src/option'
 import { match } from '../src/match'
-import { Option } from '../src/option'
 
 type User = {
   name: string
@@ -8,9 +8,9 @@ type User = {
 
 function getUser(isSignedIn = true): Option<User> {
   if(!isSignedIn) {
-    return Option.none
+    return None
   }
-  return Option.some({ name: 'John Doe', age: 35 })
+  return Some({ name: 'John Doe', age: 35 })
 }
 
 const user = getUser()
