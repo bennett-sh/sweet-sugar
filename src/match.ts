@@ -2,7 +2,8 @@ import type { RecursivePartial } from './types.js'
 import { deepCompare } from './utils/objects.js'
 import { Option } from './option.js'
 
-class MatchStatementBuilder<T, TReturn> {
+/** The builder pattern for the match statement. */
+export class MatchStatementBuilder<T, TReturn> {
   private collectedWhens: Array<[T | RecursivePartial<T>, (key: T) => any]> = []
   private collectedOther: ((key: T) => any) | undefined = undefined
   private value: TReturn | undefined = undefined
@@ -147,10 +148,11 @@ class MatchStatementBuilder<T, TReturn> {
  *   .when('no', () => false)
  *   .otherwise(() => { throw new Error('unknown value') })
  *   .finish
-
+ *
  * parseYesNo('yes') //=> true
  * parseYesNo('no')  //=> false
  * parseYesNo('asd') //=> Error: unknown value
+ * @returns {@link MatchStatementBuilder}
  */
 export function match<T>(key: T): MatchStatementBuilder<T, unknown> {
   return new MatchStatementBuilder(key)

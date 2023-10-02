@@ -1,0 +1,52 @@
+name: Check
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  create-docs:
+    name: Create Docs
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v3
+
+      - name: Setup Git
+        run: |
+          git config --global user.name "GitHub Actions"
+          git config --global user.email "actions@github.com"
+
+      - name: Setup Node
+        uses: action/setup-node@v3
+        with:
+          node-version: latest
+
+      - name: Setup PNPM
+        uses: pnpm/action-setup@v2
+
+      - name: Install Dependencies
+        run: |
+          pnpm install
+          pnpm install -g jsdoc
+
+#      - name: Lint
+#        run: pnpm lint
+#
+#      - name: Tests
+#        run: pnpm test
+
+      - name: Build Docs
+        run: jsdoc -r -p package.json .
+
+      - name: Update Docs
+        run: |
+          git branch -D docs
+          git checkout -b docs
+          rm -rf .!(out)
+          mv out/sweet-sugar/* .
+          rm -rf out
+          git commit -m "docs: update docs"
