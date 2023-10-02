@@ -49,6 +49,8 @@ jobs:
 
       - name: Update Docs
         run: |
+          ls out
+          ls out/sweet-sugar
           mv out/sweet-sugar/* docs/
           cd docs
           git commit -m "docs: update docs"
