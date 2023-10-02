@@ -1,5 +1,7 @@
-# Sweet Sugar
-#### A collection of tasty syntax utilities mostly inspired by Rust
+<div align="center">
+  <h1>🍫Sweet Sugar</h1>
+  <h4>A collection of tasty syntax utilities mostly inspired by Rust</h4>
+</div>
 
 ## List of features
 - [Match Statement](#match-statement)
