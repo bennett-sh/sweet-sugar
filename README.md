@@ -3,6 +3,7 @@
 
 ## List of features
 - [Match Statement](#match-statement)
+- [Option](#option)
 
 ### Match Statement
 The match statement works by starting off with a key to match and then multiple chaining methods.
@@ -51,3 +52,14 @@ const canModerate = match(user)
 ```
 
 Some advanced examples of the match statement can be found at [examples/match.ts](https://github.com/bennett-sh/sweet-sugar/tree/main/examples/match.ts).
+
+### Option
+An option is a type to represent some kind of data that may not exist in a safer way than undefined/null.
+
+```ts
+const user: Option<User> = await getUser()
+
+console.log(
+  user.unwrap$() //=> throws an error when user is none
+)
+```

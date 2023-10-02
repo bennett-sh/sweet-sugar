@@ -25,3 +25,7 @@ console.log(
 match(user) //=> Option<User>
   .some(user => console.log({ user })) //=> User
   .none(() => console.log('not signed in'))
+
+console.log({
+  username: user.map(({ name }) => name)
+})
