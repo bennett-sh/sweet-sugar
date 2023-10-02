@@ -147,3 +147,12 @@ export function Err<E>(error: E) {
 }
 /** An okay result with no value */
 export const Blank = new Result<void, unknown>(ResultStatus.Ok, (() => {})())
+
+/** Converts a normal function into a function returning a result. */
+export function toResult<T, E>(f: (...args: any[]) => T, ...args: any[]): Result<T, E> {
+  try {
+    return Ok(f(...args))
+  } catch(err) {
+    return Err(err)
+  }
+}

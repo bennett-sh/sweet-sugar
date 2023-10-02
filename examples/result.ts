@@ -1,4 +1,4 @@
-import { Err, Ok, Result } from '../src/result'
+import { Err, Ok, Result, toResult } from '../src/result'
 import { match } from '../src/match'
 
 type User = {
@@ -31,3 +31,14 @@ match(user) //=> Result<User, ApiError>
 console.log({
   username: user.map(({ name }) => name)
 })
+
+const myFn = (error: boolean) => {
+  if(error) throw new Error('test')
+
+  return 'hello'
+}
+
+console.log(
+  toResult(() => myFn(false)),
+  toResult(() => myFn(true))
+)
