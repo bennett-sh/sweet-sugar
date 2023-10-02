@@ -73,4 +73,14 @@ export class Option<T> {
     if(this.isNone) return Option.none
     return Option.some(f(this.unwrap$()))
   }
+
+  /**
+   * Allows you to safely use the value asynchronically without checking whether it exists
+  */
+  public async mapAsync<TReturn>(f: (value: T) => Promise<TReturn>): Promise<Option<T | TReturn>> {
+    if(this.isSome) {
+      return Option.some(await f(this.unwrap$()))
+    }
+    return this
+  }
 }

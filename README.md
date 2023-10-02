@@ -4,6 +4,7 @@
 ## List of features
 - [Match Statement](#match-statement)
 - [Option](#option)
+- [Result](#result)
 
 ### Match Statement
 The match statement works by starting off with a key to match and then multiple chaining methods.
@@ -51,7 +52,7 @@ const canModerate = match(user)
   .finish //= true
 ```
 
-Some advanced examples of the match statement can be found at [examples/match.ts](https://github.com/bennett-sh/sweet-sugar/tree/main/examples/match.ts).
+[Advanced Examples](examples/match.ts)
 
 ### Option
 An option is a type to represent some kind of data that may not exist in a safer way than undefined/null.
@@ -63,3 +64,22 @@ console.log(
   user.unwrap$() //=> throws an error when user is none
 )
 ```
+
+[Advanced Examples](examples/option.ts)
+
+### Result
+A class to improve JS error handling by forcing you to either handle or explicitly supress errors.
+
+```ts
+const user: Result<User, ApiError> = await getUser()
+
+match(user)
+  .ok(user => {
+    alert(`your name is ${user.name}`)
+  })
+  .error(error => {
+    console.error(`something went wrong: ${error}`)
+  })
+```
+
+[Advanced Examples](examples/result.ts)
