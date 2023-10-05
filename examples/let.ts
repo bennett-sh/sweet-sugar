@@ -6,3 +6,6 @@ console.log('will error'.let === undefined)
 useLet()
 
 'hello'.let(console.log) // prints "hello" to console
+
+// log values mid-chain
+const someValue = 'my chain'.replace(' ', '_').let(console.log).replace('chain', 'asd')
