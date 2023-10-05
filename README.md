@@ -100,6 +100,8 @@ useLet() // enable let syntax
 myFunctionProcessingTheReplacedValue('Hello World'.replace('o', '0')).charAt(0)
 // you can write
 'Hello World'.replace('o', '0').let(myFunctionProcessingTheReplacedValue).charAt(0)
+
+'mid-chain logging'.replace('-', '_').let(console.log).replace('_', '-')
 ```
 
 [Advanced Examples](examples/let.ts)
