@@ -7,6 +7,7 @@
 - [Match Statement](#match-statement)
 - [Option](#option)
 - [Result](#result)
+- [Let](#let)
 
 ### Match Statement
 The match statement works by starting off with a key to match and then multiple chaining methods.
@@ -85,3 +86,20 @@ match(user)
 ```
 
 [Advanced Examples](examples/result.ts)
+
+### Let
+Some sugar that allows you to chain methods in a more concise way.
+
+```ts
+import { useLet } from 'sweet-sugar'
+useLet() // enable let syntax
+
+'my string'.let(console.log)
+
+// so instead of
+myFunctionProcessingTheReplacedValue('Hello World'.replace('o', '0')).charAt(0)
+// you can write
+'Hello World'.replace('o', '0').let(myFunctionProcessingTheReplacedValue).charAt(0)
+```
+
+[Advanced Examples](examples/let.ts)
