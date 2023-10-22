@@ -91,8 +91,7 @@ match(user)
 Some sugar that allows you to chain methods in a more concise way.
 
 ```ts
-import { useLet } from 'sweet-sugar'
-useLet() // enable let syntax
+import 'sweet-sugar/let'
 
 'my string'.let(console.log)
 

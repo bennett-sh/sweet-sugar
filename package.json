@@ -1,10 +1,13 @@
 {
   "name": "sweet-sugar",
-  "version": "1.6.0",
+  "version": "1.8.0",
   "description": "A collection of tasty syntax utilities mostly inspired by Rust",
   "homepage": "https://github.com/bennett-sh/sweet-sugar",
   "main": "dist/lib.js",
   "types": "dist/lib.d.ts",
+  "exports": {
+    "./let": "./dist/let.js"
+  },
   "files": [
     "/dist"
   ],
