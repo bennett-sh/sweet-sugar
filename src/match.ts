@@ -208,6 +208,6 @@ export class MatchStatementBuilder<T, TReturn> {
  * parseYesNo('asd') //=> Error: unknown value
  * @returns {@link MatchStatementBuilder}
  */
-export function match<T>(key: T): MatchStatementBuilder<T, unknown> {
-  return new MatchStatementBuilder(key)
+export function match<TKey, TReturn = undefined>(key: TKey): MatchStatementBuilder<TKey, unknown> {
+  return new MatchStatementBuilder<TKey, TReturn>(key)
 }
