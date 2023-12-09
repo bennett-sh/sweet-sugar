@@ -52,3 +52,23 @@ console.log({
     .assuming({ role: 'moderator' })
     .finish
 })
+
+type Entity = ({
+  type: 'user'
+} & User) | {
+  type: 'group',
+  name: string,
+  id: string,
+  members: Array<User>
+}
+
+match({
+  type: 'group',
+  id: '1234',
+  members: [],
+  name: 'My Group'
+} as Entity)
+  .when({ type: 'group' }, group => {
+    // group is now inferred to be a { type: 'group' } object
+    console.log(group.members)
+  })

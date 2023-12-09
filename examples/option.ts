@@ -17,8 +17,8 @@ const user = getUser()
 
 console.log(
   match(user)
-    .when({ isSome: true }, safeUser => safeUser.unwrap$())
-    .when({ isNone: true }, () => ({ error: 'not signed in' }))
+    .when$({ isSome: true }, safeUser => safeUser.unwrap$())
+    .when$({ isNone: true }, () => ({ error: 'not signed in' }))
     .finish
 )
 

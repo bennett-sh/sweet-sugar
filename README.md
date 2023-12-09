@@ -5,6 +5,7 @@
 
 ## List of features
 - [Match Statement](#match-statement)
+- [Builder](#builder)
 - [Option](#option)
 - [Result](#result)
 - [Let](#let)
@@ -104,3 +105,28 @@ myFunctionProcessingTheReplacedValue('Hello World'.replace('o', '0')).charAt(0)
 ```
 
 [Advanced Examples](examples/let.ts)
+
+### Builder
+A function that allows you to use the building pattern on classes which don't support it themselves.
+
+```ts
+class MyClass { ... }
+
+const instance = build(MyClass, 'my constructor argument')
+  .set('test', true)
+  .update('doSomething', old => (...args: Array<any>) => {
+    console.log('before')
+    const result = old(...args) //=> 42
+    console.log('after')
+    return result
+  })
+
+instance.test //=> true
+instance.doSomething()
+// before
+// after
+//=> 42
+```
+
+[Advanced Examples](examples/builder.ts)
+
