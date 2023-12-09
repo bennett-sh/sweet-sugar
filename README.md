@@ -11,7 +11,7 @@
 - [Let](#let)
 
 ### Match Statement
-The match statement works by starting off with a key to match and then multiple chaining methods.
+The match statement works by starting off with a key to match followed by multiple chaining methods.
 ```ts
 match(`hello`)
   .when('hello', () => 'en')
@@ -23,7 +23,7 @@ match(`hello`)
   .finish //= en
 ```
 
-The match statement also supports deep pattern matching like so:
+The match statement also supports deep pattern matching & narrowing like so:
 ```ts
 type User = {
   name: string,
