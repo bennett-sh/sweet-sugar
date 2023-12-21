@@ -184,14 +184,18 @@ export class MatchStatementBuilder<T, TReturn> {
   /**
    * Allows you to create a default value for when no pattern matches.
    * Only applies if there's currently no valid return value from previous calls.
-   * @param callback A method ran if the current value is undefined. The return value will be later returned by the {@link finish} method if not overwritten.
+   * @param callback A method ran or constant used if the current value is undefined. The return value will be later returned by the {@link finish} method if not overwritten.
    */
-  public otherwise<TLocalReturn>(callback: (key: T) => TLocalReturn | TReturn): MatchStatementBuilder<T, TReturn | TLocalReturn> {
+  public otherwise<TLocalReturn>(callback: ((key: T) => TLocalReturn | TReturn) | TLocalReturn | TReturn): MatchStatementBuilder<T, TReturn | TLocalReturn> {
     if(this.collectWhens) {
       this.collectedOther = callback
     } else {
       if(this.value === undefined) {
-        this.value = callback(this.key) as any
+        if(callback instanceof Function) {
+          this.value = callback(this.key) as any
+        } else {
+          this.value = callback as any
+        }
       }
     }
     return this as any as MatchStatementBuilder<T, TReturn | TLocalReturn>
@@ -203,11 +207,19 @@ export class MatchStatementBuilder<T, TReturn> {
   public get finish(): TReturn | undefined {
     for(const [pattern, callback] of this.collectedWhens) {
       if(this.matches(pattern)) {
-        this.value = callback(this.key) as any
+        if(callback instanceof Function) {
+          this.value = callback(this.key) as any
+        } else {
+          this.value = callback as any
+        }
       }
     }
     if(this.value === undefined && this.collectedOther !== undefined) {
-      this.value = this.collectedOther(this.key) as any
+      if(this.collectedOther instanceof Function) {
+        this.value = this.collectedOther(this.key) as any
+      } else {
+        this.value = this.collectedOther as any
+      }
     }
 
     return this.value
