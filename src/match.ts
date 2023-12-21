@@ -131,7 +131,7 @@ export class MatchStatementBuilder<T, TReturn> {
    */
   public get some(): T extends Option<any> ? <TLocalReturn>(callback: ((key: T extends Option<infer U> ? U : never) => TReturn | TLocalReturn) | TReturn | TLocalReturn) => MatchStatementBuilder<T, TReturn | TLocalReturn> : never {
     if(!(this.key instanceof Option)) throw new TypeError('this method is only available on the Option<T> type')
-    return function<TLocalReturn>(callback: (key: T) => TReturn | TLocalReturn) {
+    return function<TLocalReturn>(callback: ((key: T) => TReturn | TLocalReturn) | TReturn | TLocalReturn) {
       return this.when({ isSome: true }, () => {
         if(callback instanceof Function) {
           this.value = callback(this.key.unwrap$())
@@ -152,7 +152,7 @@ export class MatchStatementBuilder<T, TReturn> {
    */
   public get none(): T extends Option<any> ? <TLocalReturn>(callback: (() => TReturn | TLocalReturn) | TReturn | TLocalReturn) => MatchStatementBuilder<T, TReturn | TLocalReturn> : never {
     if(!(this.key instanceof Option)) throw new TypeError('this method is only available on the Option<T> type')
-    return function<TLocalReturn>(callback: () => TReturn | TLocalReturn) {
+    return function<TLocalReturn>(callback: (() => TReturn | TLocalReturn) | TReturn | TLocalReturn) {
       return this.when({ isNone: true }, callback)
     } as any
   }
@@ -167,7 +167,7 @@ export class MatchStatementBuilder<T, TReturn> {
    */
   public get ok(): T extends Result<any, any> ? <TLocalReturn>(callback: ((key: T extends Result<infer O, any> ? O : never) => TReturn | TLocalReturn) | TLocalReturn | TReturn) => MatchStatementBuilder<T, TReturn | TLocalReturn> : never {
     if(!(this.key instanceof Result)) throw new TypeError('this method is only available on the Result<T, E> type')
-    return function<TLocalReturn>(callback: (key: T) => TReturn | TLocalReturn) {
+    return function<TLocalReturn>(callback: ((key: T) => TReturn | TLocalReturn) | TReturn | TLocalReturn) {
       return this.when({ isOk: true }, () => {
         if(callback instanceof Function) {
           return callback(this.key.unwrap$())
@@ -188,7 +188,7 @@ export class MatchStatementBuilder<T, TReturn> {
    */
   public get error(): T extends Result<any, any> ? <TLocalReturn>(callback: ((error: T extends Result<any, infer E> ? E : never) => TReturn | TLocalReturn) | TLocalReturn | TReturn) => MatchStatementBuilder<T, TReturn | TLocalReturn> : never {
     if(!(this.key instanceof Result)) throw new TypeError('this method is only available on the Result<T, E> type')
-    return function<TLocalReturn>(callback: (error: T) => TReturn | TLocalReturn) {
+    return function<TLocalReturn>(callback: ((error: T) => TReturn | TLocalReturn) | TReturn | TLocalReturn) {
       return this.when({ isError: true }, () => {
         if(callback instanceof Function) {
           return callback(this.key.unwrapError$())
