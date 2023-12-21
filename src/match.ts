@@ -5,8 +5,8 @@ import { Result } from './result.js'
 
 /** The builder pattern for the match statement. */
 export class MatchStatementBuilder<T, TReturn> {
-  private collectedWhens: Array<[T | RecursivePartial<T>, (key: T) => any]> = []
-  private collectedOther: ((key: T) => any) | undefined = undefined
+  private collectedWhens: Array<[T | RecursivePartial<T>, any | ((key: T) => any)]> = []
+  private collectedOther: ((key: T) => any) | any | undefined = undefined
   private value: TReturn | undefined = undefined
   private collectWhens: boolean = false
 
@@ -56,16 +56,20 @@ export class MatchStatementBuilder<T, TReturn> {
   /**
    * Allows for matching a simple pattern.
    * @param pattern The pattern to match for. Can be a value or a partial object.
-   * @param callback A method ran if the match is successfull. The return value will be later returned by the {@link finish} method if not overwritten.
+   * @param callback A method ran if the match is successful or a constant. The return value will be later returned by the {@link finish} method if not overwritten.
    */
-  public when$<P extends T | RecursivePartial<T>, TLocalReturn>(pattern: P, callback: (key: T) => TReturn | TLocalReturn): MatchStatementBuilder<T, TReturn | TLocalReturn> {
+  public when$<P extends T | RecursivePartial<T>, TLocalReturn>(pattern: P, callback: ((key: T) => TReturn | TLocalReturn) | TReturn | TLocalReturn): MatchStatementBuilder<T, TReturn | TLocalReturn> {
     if(this.collectWhens) {
       this.collectedWhens.push([
         pattern, callback
       ])
     } else {
       if(this.matches(pattern)) {
-        this.value = callback(this.key as T) as any
+        if(callback instanceof Function) {
+          this.value = callback(this.key as T) as any
+        } else {
+          this.value = callback as any
+        }
       }
     }
     return this as any as MatchStatementBuilder<T, TReturn | TLocalReturn>
@@ -75,16 +79,20 @@ export class MatchStatementBuilder<T, TReturn> {
    * Allows for matching a simple pattern.
    * Unlike {@link when$}, this method won't narrow the resulting object, which can sometimes cause conflicts when testing for properties on class instances.
    * @param pattern The pattern to match for. Can be a value or a partial object.
-   * @param callback A method ran if the match is successfull. The return value will be later returned by the {@link finish} method if not overwritten.
+   * @param callback A method ran if the match is successful or a constant. The return value will be later returned by the {@link finish} method if not overwritten.
    */
-  public when<P extends T | RecursivePartial<T>, TLocalReturn>(pattern: P, callback: (key: Extract<T, P> & T) => TReturn | TLocalReturn): MatchStatementBuilder<T, TReturn | TLocalReturn> {
+  public when<P extends T | RecursivePartial<T>, TLocalReturn>(pattern: P, callback: ((key: Extract<T, P> & T) => TReturn | TLocalReturn) | TReturn | TLocalReturn): MatchStatementBuilder<T, TReturn | TLocalReturn> {
     if(this.collectWhens) {
       this.collectedWhens.push([
         pattern, callback
       ])
     } else {
       if(this.matches(pattern)) {
-        this.value = callback(this.key as Extract<T, P> & T) as any
+        if(callback instanceof Function) {
+          this.value = callback(this.key as Extract<T, P> & T) as any
+        } else {
+          this.value = callback as any
+        }
       }
     }
     return this as any as MatchStatementBuilder<T, TReturn | TLocalReturn>

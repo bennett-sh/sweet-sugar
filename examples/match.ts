@@ -14,9 +14,9 @@ const user: User = {
 }
 
 const permissionLevel = match(user)
-  .when({ role: 'admin' }, () => '*')
+  .when({ role: 'admin' }, '*') // allows static values (remember that functions will have to be wrapped)
   .when({ role: 'moderator' }, () => 'moderation.*,user.*')
-  .when({ role: 'user' }, () => 'user.*')
+  .when({ role: 'user' }, 'user.*')
   .finish
 
 console.log(permissionLevel) //= "*"
